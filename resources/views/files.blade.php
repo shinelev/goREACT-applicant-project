@@ -33,7 +33,10 @@
                         <div class="col-3">{{ $file->description }}</div>
                         <div class="col-2">{{ $file->tag }}</div>
                         <div class="col-1">{{ $file->created_at }}</div>
-                        <div class="col-4">{{ $file->file }}</div>
+                        <div class="col-4">
+                            <img src="/storage/files/{{ $file->file }}">
+                            {{ $file->file }}
+                        </div>
                     </div>
                     @php
                         ++$number

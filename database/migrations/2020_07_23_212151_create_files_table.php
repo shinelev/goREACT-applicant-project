@@ -19,6 +19,7 @@ class CreateFilesTable extends Migration
             $table->binary('file');
             $table->mediumText('description')->nullable();
             $table->string('tag')->nullable();
+            $table->string('type');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
