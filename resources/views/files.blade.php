@@ -15,56 +15,32 @@
 
     {{-- List of files --}}
     @if(count($files))
-        @foreach($files as $file)
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-1 col-lg-1">
-                        #
-                    </div>
-                    <div class="col-md-1 col-lg-1">
-                        file_name
-                    </div>
-                    <div class="col-md-1 col-lg-1">
-                        file_type
-                    </div>
-                    <div class="col-md-1 col-lg-1">
-                        file_name_saved
-                    </div>
-                    <div class="col-md-2 col-lg-2">
-                        file_description
-                    </div>
-                    <div class="col-md-1 col-lg-1">
-                        created_at
-                    </div>
-                    <div class="col-md-4 col-lg-5">
-                        FILE
-                    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-1">#</div>
+                <div class="col-2">name</div>
+                <div class="col-3">description</div>
+                <div class="col-2">tag</div>
+                <div class="col-1">created_at</div>
+                <div class="col-4">file</div>
+                @foreach($files as $file)
+                    @php
+                    $number = 1
+                    @endphp
                     <div class="row">
-                        <div class="col-md-1 col-lg-1">
-                            {{ $file->id }}
-                        </div>
-                        <div class="col-md-1 col-lg-1">
-                            {{ $file->file_name }}
-                        </div>
-                        <div class="col-md-1 col-lg-1">
-                            {{ $file->file_type }}
-                        </div>
-                        <div class="col-md-1 col-lg-1">
-                            {{ $file->file_name_saved }}
-                        </div>
-                        <div class="col-md-2 col-lg-2">
-                            {{ $file->file_description }}
-                        </div>
-                        <div class="col-md-1 col-lg-1">
-                            {{ $file->created_at }}
-                        </div>
-                        <div class="col-md-4 col-lg-5">
-                            FILE
-                        </div>
+                        <div class="col-1">{{ $number }}</div>
+                        <div class="col-2">{{ $file->name }}</div>
+                        <div class="col-3">{{ $file->description }}</div>
+                        <div class="col-2">{{ $file->tag }}</div>
+                        <div class="col-1">{{ $file->created_at }}</div>
+                        <div class="col-4">{{ $file->file }}</div>
                     </div>
-                </div>
+                    @php
+                        ++$number
+                    @endphp
+                @endforeach
             </div>
-        @endforeach
+        </div>
     @else
         <div class="container">
             <div class="row">

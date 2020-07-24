@@ -16,7 +16,7 @@
             <div class="col-lg-9 col-md-9">
                 @include('layouts.inc.messages')
                 <h3>File</h3>
-                {!! Form::open(['url' => 'files/upload', 'files' => true]) !!}
+                {!! Form::open(['url' => 'files/upload', 'files' => true, 'enctype' => 'multipart/data']) !!}
                     <div class="form-group">
                         {{ Form::label('name', 'Type file name for saving') }}
                         {{ Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'Enter file name']) }}
