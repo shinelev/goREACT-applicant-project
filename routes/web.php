@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::get('/', 'FileController@show'); // TODO: fix or remove
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
+Route::get('/files', 'FilesController@getFiles');
+
+Route::post('/files/upload', 'FilesController@submit');

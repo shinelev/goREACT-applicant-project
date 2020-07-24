@@ -18,8 +18,7 @@ class CreateFilesTable extends Migration
             $table->string('file_name');
             $table->string('file_type');
             $table->string('file_name_saved');
-            $table->string('title')->nullable();
-            $table->string('description')->nullable();
+            $table->mediumText('description')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
