@@ -19,7 +19,10 @@
                     <a class="nav-link" href="/home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/files">Files</a>
+                    @php
+                    $id = Auth::user()->id
+                    @endphp
+                    <a class="nav-link" href="{{ url('/files', $id) }}"  >Files</a>
                 </li>
             </ul>
             <!-- Right Side Of Navbar -->

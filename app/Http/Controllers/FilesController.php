@@ -28,8 +28,8 @@ class FilesController extends Controller
         return redirect('/home')->with('success', 'File was saved');
     }
 
-    public function getFiles() { //TODO: add selection by user_id
-        $files = File::all();
+    public function getFiles($id) {
+        $files = File::all()->where('user_id', null, $id);
 
         return view('files')->with('files', $files);
     }

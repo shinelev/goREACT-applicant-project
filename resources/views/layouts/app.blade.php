@@ -37,7 +37,7 @@
                             <a class="nav-link" href="/home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/files">Files</a>
+                            <a class="nav-link" href="/user/{{ Auth::user()->id }}/files">Files</a>
                         </li>
                     </ul>
                     <!-- Right Side Of Navbar -->

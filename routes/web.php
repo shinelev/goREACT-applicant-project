@@ -22,6 +22,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
-Route::get('/files', 'FilesController@getFiles');
+Route::get('/user/{id}/files', 'FilesController@getFiles')->middleware('auth');
 
-Route::post('/files/upload', 'FilesController@submit');
+Route::post('/files/upload', 'FilesController@submit')->middleware('auth');
