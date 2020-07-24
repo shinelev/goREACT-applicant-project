@@ -22,7 +22,7 @@
                         {{ Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'Enter file name']) }}
                         <br>
                         {{ Form::label('description', 'Enter file description') }}
-                        {{ Form::textarea('description', '', ['class' => 'form-control', 'placeholder' => 'Enter file description']) }}
+                        {{ Form::textarea('description', '', ['class' => 'form-control', 'placeholder' => 'Enter file description', 'id' => 'textarea']) }}
                         <br>
                         {{ Form::label('tag', 'Enter tag for file') }}
                         {{ Form::text('tag', '', ['class' => 'form-control', 'placeholder' => 'Enter tag']) }}

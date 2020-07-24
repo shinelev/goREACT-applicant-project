@@ -33,7 +33,7 @@ class FilesController extends Controller
         $file->description = $request->input('description');
         $file->tag = $request->input('tag');
         $file->user_id = $request->input('user_id');
-        $file->type = 'video';
+        $file->type = $this->getType($extension);
         $file->save();
 
         return redirect('/home')->with('success', 'File was saved');
@@ -43,5 +43,28 @@ class FilesController extends Controller
         $files = File::all()->where('user_id', null, $id);
 
         return view('files')->with('files', $files);
+    }
+
+    public function delete($id, $file_id) {
+        $files = File::all()->where([
+            ['user_id', '=', $id],
+            ['id', '=', $file_id],
+        ])->delete();
+
+        $existed_files = File::all()->where('user_id', null, $id);
+
+        return view('files')->with('files', $existed_files);
+    }
+
+    private function getType(string $extension): string {
+        if ($extension === 'jpg' || $extension === 'jpeg') {
+            return 'image';
+        }
+        if ($extension === 'mp4v' || $extension === 'mp4') {
+            return 'video';
+        }
+        if ($extension === 'pdf') {
+            return 'pdf';
+        }
     }
 }
