@@ -80,7 +80,7 @@
             @yield('content')
         </main>
 
-        <footer id="footer" class="text-center">
+        <footer id="footer" class="text-center text-muted">
             <p> Copyright 2020 &copy; NoName</p>
         </footer>
     </div>

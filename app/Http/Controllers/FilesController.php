@@ -4,27 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\File;
+use Illuminate\Support\Facades\Auth;
 
 class FilesController extends Controller
 {
     public function submit(Request $request) {
+
         $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required'
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'tag' => 'required|string',
+            'image' => 'mimes:mp4v,mp4,mpg4,pdf,jpg,jpeg'
         ]);
 
         $file = new File;
-        $file->file_name = $request->input('name');
-        $file->file_type = '$request->input()';
-        $file->file_name_saved = $request->input('name');
+        $file->name = $request->input('name');
+        $file->file = $request->file('image');
         $file->description = $request->input('description');
-        $file->user_id = '1';
+        $file->tag = $request->input('tag');
+        $file->user_id = $request->input('user_id');
         $file->save();
 
         return redirect('/home')->with('success', 'File was saved');
     }
 
-    public function getFiles() {
+    public function getFiles() { //TODO: add selection by user_id
         $files = File::all();
 
         return view('files')->with('files', $files);
