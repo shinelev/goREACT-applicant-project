@@ -5,56 +5,46 @@
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="text-center">
-                    <p>
-                        User personal files
-                    </p>
+                    <h5>User personal files</h5>
                 </div>
             </div>
         </div>
     </div>
-
-    {{-- List of files --}}
     @if(count($files))
         <div class="container">
-            <div class="row">
-                <div class="col">
-                    <ul class="list-unstyled">
-                        @foreach($files as $file)
+            <div class="row shadow-none p-3 mb-5 bg-light rounded">
+                @foreach($files as $file)
+                    <div class="col-lg-9 col-md-9">
+                        <ul class="list-unstyled">
                             @if ($file->type === 'image')
-                            <li class="media">
-                                <img class="d-flex mr-3 thumb" src="/storage/files/{{ $file->file }}"
-                                     alt="Generic placeholder image">
-                                <div class="media-body">
-                                    <h2 class="mt-0 mb-1 font-weight-bold"> File name: {{ $file->name }}</h2>
-                                    <h5 class="mt-0 mb-1 font-weight-bold"> Tags: {{ $file->tag }}</h5>
-                                    Description: {{ $file->description }}
-                                </div>
-                            </li>
+                                @include('layouts.inc.image')
+                                <br>
                             @elseif($file->type === 'pdf')
-                                <li class="media">
-                                    <img class="d-flex mr-3 thumb" src="{{url('/images/pdf_icon.png')}}" />
-                                    <div class="media-body">
-                                        <h2 class="mt-0 mb-1 font-weight-bold"> File name: {{ $file->name }}</h2>
-                                        <h5 class="mt-0 mb-1 font-weight-bold"> Tags: {{ $file->tag }}</h5>
-                                        Description: {{ $file->description }}
-                                    </div>
-                                </li>
+                                @include('layouts.inc.pdf')
+                                <br>
                             @elseif($file->type === 'video')
-                                <li class="media">
-                                    <video class="d-flex mr-3 thumb" controls>
-                                        <source src="/storage/files/{{ $file->file }}" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                    <div class="media-body">
-                                        <h2 class="mt-0 mb-1 font-weight-bold"> File name: {{ $file->name }}</h2>
-                                        <h5 class="mt-0 mb-1 font-weight-bold"> Tags: {{ $file->tag }}</h5>
-                                        Description: {{ $file->description }}
-                                    </div>
-                                </li>
-
+                                @include('layouts.inc.video')
+                                <br>
                             @endif
-                    </ul>
-                    @endforeach
+                        </ul>
+                    </div>
+                    <div class="col-lg-1 col-md-1">
+                        @include('layouts.inc.download_form')
+                    </div>
+                    <div class="col-lg-1 col-md-1">
+                    </div>
+                    <div class="col-lg-1 col-md-1">
+                        @include('layouts.inc.delete_form')
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div>
+                        {{ $files->links() }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,5 +61,4 @@
             </div>
         </div>
     @endif
-
 @endsection

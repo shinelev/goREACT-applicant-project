@@ -26,4 +26,6 @@ Route::get('/user/{id}/files', 'FilesController@getFiles');
 
 Route::post('/files/upload', 'FilesController@submit');
 
-Route::delete('/user/{id}/files/{file_id}/delete', 'FilesController@delete');
+Route::get('/files/download/{file_id}', 'FilesController@downloadFile')->middleware('auth');
+
+Route::delete('/files/delete/{file_id}', 'FilesController@delete');

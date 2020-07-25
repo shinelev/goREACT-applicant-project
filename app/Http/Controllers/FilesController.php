@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Type;
 
 class FilesController extends Controller
 {
-    public function submit(Request $request) {
+    public function submit(Request $request)
+    {
 
         $this->validate($request, [
             'name' => 'required|string',
@@ -21,8 +24,8 @@ class FilesController extends Controller
             $fileNameWithExt = $request->file('image')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $fileNameToStore = $fileName.'_'.time().'_.'.$extension;
-            $path = $request->file('image')->storeAs('public/files', $fileNameToStore);
+            $fileNameToStore = $fileName . '.' . $extension;
+            $path = $request->file('image')->storeAs('public', $fileNameToStore);
         } else {
             throwException("Can't handle file saving");
         }
@@ -33,38 +36,37 @@ class FilesController extends Controller
         $file->description = $request->input('description');
         $file->tag = $request->input('tag');
         $file->user_id = $request->input('user_id');
-        $file->type = $this->getType($extension);
+        $file->type = Type::getType($extension);
         $file->save();
 
         return redirect('/home')->with('success', 'File was saved');
     }
 
-    public function getFiles($id) {
-        $files = File::all()->where('user_id', null, $id);
-
-        return view('files')->with('files', $files);
+    public function getFiles($id)
+    {
+        $files = File::where('user_id', '=', $id)->paginate(5);
+        return view('files', ['files' => $files]);
     }
 
-    public function delete($id, $file_id) {
-        $files = File::all()->where([
-            ['user_id', '=', $id],
-            ['id', '=', $file_id],
-        ])->delete();
+    public function delete($file_id, Request $request)
+    {
+        $user_id = $request->input('user_id');
+        $file = File::where('id', $file_id)->first();
+        $url = Storage::url($file->file);
+        unlink(public_path() . $url);
+        File::destroy($file->id);
 
-        $existed_files = File::all()->where('user_id', null, $id);
-
-        return view('files')->with('files', $existed_files);
+        return $this->getFiles($user_id);
     }
 
-    private function getType(string $extension): string {
-        if ($extension === 'jpg' || $extension === 'jpeg') {
-            return 'image';
-        }
-        if ($extension === 'mp4v' || $extension === 'mp4') {
-            return 'video';
-        }
-        if ($extension === 'pdf') {
-            return 'pdf';
+    public function downloadFile($file_id, Request $request)
+    {
+        $file = File::where('id', $file_id)->first();
+        $user_id = $request->input('user_id');
+        $url = Storage::url($file->file);
+
+        if (Auth::user()->id == $user_id || Auth::user()->id == $file->user_id) {
+            return response()->download(public_path() . $url);
         }
     }
 }
