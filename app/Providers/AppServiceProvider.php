@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\FileService;
+use App\Services\iFileService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -14,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(iFileService::class, function(){
+            return new FileService();
+        });
     }
 
     /**

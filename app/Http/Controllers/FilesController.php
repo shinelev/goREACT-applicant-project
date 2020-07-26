@@ -2,17 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\iFileService;
 use Illuminate\Http\Request;
-use App\File;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Type;
 
 class FilesController extends Controller
 {
-    public function submit(Request $request)
-    {
+    private $fileService;
 
+    /**
+     * FilesController constructor.
+     * @param $fileService
+     */
+    public function __construct(iFileService $fileService)
+    {
+        $this->fileService = $fileService;
+    }
+
+
+    public function upload(Request $request)
+    {
         $this->validate($request, [
             'name' => 'required|string',
             'description' => 'required|string',
@@ -20,53 +30,42 @@ class FilesController extends Controller
             'image' => 'mimes:mp4v,mp4,mpg4,pdf,jpg,jpeg|max:4999'
         ]);
 
-        if ($request->hasFile('image')) {
-            $fileNameWithExt = $request->file('image')->getClientOriginalName();
-            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileNameToStore = $fileName . '.' . $extension;
-            $path = $request->file('image')->storeAs('public', $fileNameToStore);
-        } else {
-            throwException("Can't handle file saving");
-        }
-
-        $file = new File;
-        $file->name = $request->input('name');
-        $file->file = $fileNameToStore;
-        $file->description = $request->input('description');
-        $file->tag = $request->input('tag');
-        $file->user_id = $request->input('user_id');
-        $file->type = Type::getType($extension);
-        $file->save();
+        $this->fileService->handleFileUpload($request);
 
         return redirect('/home')->with('success', 'File was saved');
     }
 
     public function getFiles($id)
     {
-        $files = File::where('user_id', '=', $id)->paginate(5);
-        return view('files', ['files' => $files]);
+        if (Auth::user()->id == $id) {
+            $files = $this->fileService->getFilesByUserIdWithPagination($id);
+            return view('files', ['files' => $files]);
+        }
+
+        return view('welcome');
     }
 
     public function delete($file_id, Request $request)
     {
         $user_id = $request->input('user_id');
-        $file = File::where('id', $file_id)->first();
-        $url = Storage::url($file->file);
-        unlink(public_path() . $url);
-        File::destroy($file->id);
 
-        return $this->getFiles($user_id);
+        if (Auth::user()->id == $user_id) {
+            $this->fileService->deleteFileFromStorageAndDb($file_id);
+            return $this->getFiles($user_id);
+        }
+
+        return view('welcome');
     }
 
     public function downloadFile($file_id, Request $request)
     {
-        $file = File::where('id', $file_id)->first();
         $user_id = $request->input('user_id');
-        $url = Storage::url($file->file);
 
-        if (Auth::user()->id == $user_id || Auth::user()->id == $file->user_id) {
+        if (Auth::user()->id == $user_id) {
+            $url = $this->fileService->getUrlForFileDownload($file_id);
             return response()->download(public_path() . $url);
         }
+
+        return view('welcome');
     }
 }
