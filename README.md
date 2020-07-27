@@ -6,6 +6,7 @@ Required versions:
 - Node.js: 12.18.3
 
 ### Run project:
+
 * First of all you should have to install PHP interpreter v.7.3 and MySQL database engine.
     - the most convenient way is to use [XAMPP package](https://www.apachefriends.org/download.html)
     - or 
@@ -28,5 +29,9 @@ Required versions:
 * ~~Follow the white rabbit~~ and open [link](http://127.0.0.1:8000) in your browser. 
 
 ### Test run
+
 Project contains several simple test. To run them make following command `php artisan test`.
 
+### Demo video
+
+Handmade demo video is available in [youtube](https://youtu.be/c9Ls5YA283U)
