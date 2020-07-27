@@ -27,7 +27,7 @@ class FilesController extends Controller
             'name' => 'required|string',
             'description' => 'required|string',
             'tag' => 'required|string',
-            'image' => 'mimes:mp4v,mp4,mpg4,pdf,jpg,jpeg|max:4999'
+            'image' => 'required|mimes:mp4v,mp4,mpg4,pdf,jpg,jpeg|max:4999'
         ]);
 
         $this->fileService->handleFileUpload($request);
