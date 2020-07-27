@@ -16,7 +16,9 @@ Required versions:
 
 * Then you need to install packet manager - [Composer](https://getcomposer.org/download/)
 * Using composer just run command `composer global require laravel/installer` to install Laravel
-* After that you need to create a new database with a name `laravel` and collation `utf8mb4_unicode_ci`.
+* Then run command `composer install` to install all dependencies for project work.
+* After that you need to create a new database in MySQL (you can run it in XAMPP control panel) with a
+ name `laravel` and collation `utf8mb4_unicode_ci`.
     - you can use your own MySQL client (i.e. [DBeaver](https://dbeaver.io/))
     - or 
     - use [phpMyAdmin](http://localhost/phpmyadmin/) from XAMPP panel.
@@ -26,7 +28,14 @@ Required versions:
 * Run command `npm install` to retrieve all dependencies for frontend part of project.
 * Then you need to run backend server. Use `XAMPP`, `Homestead` or if you have PHP on you machine just run
  development server via command `php artisan serve`
-* ~~Follow the white rabbit~~ and open [link](http://127.0.0.1:8000) in your browser. 
+* ~~Follow the white rabbit~~ and open [link](http://127.0.0.1:8000) in your browser.
+
+### Workarounds
+
+* If there is a runtime exception `No application encryption key has been specified.`. You need to run 
+command `php artisan key:generate` and restart server.
+* If the problem still appears try to generate new key ` php artisan key:generate --show`, copy new key value
+and put into `.env` file after `APP_KEY=`.
 
 ### Test run
 
