@@ -15,7 +15,6 @@ Required versions:
     - use PHP installed locally [from official site](https://www.php.net/downloads)
 
 * Then you need to install packet manager - [Composer](https://getcomposer.org/download/)
-* Using composer just run command `composer global require laravel/installer` to install Laravel
 * Then run command `composer install` to install all dependencies for project work.
 * After that you need to create a new database in MySQL (you can run it in XAMPP control panel) with a
  name `laravel` and collation `utf8mb4_unicode_ci`.
